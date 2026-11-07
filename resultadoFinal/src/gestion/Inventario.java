@@ -5,11 +5,27 @@ import java.util.HashMap;
 import java.util.Map;
 import modelo.Producto;
 
+/**
+ * Controla el stock de la tienda.
+ * Patron Singleton: existe una sola instancia compartida por toda la tienda.
+ */
 public class Inventario {
+    // 1. Atributo static que guarda la unica instancia
+    private static Inventario instancia;
+
     private Map<String, Integer> stock = new HashMap<>();
 
-    public Inventario() {
+    // 2. Constructor privado: nadie fuera de esta clase puede hacer "new Inventario()"
+    private Inventario() {
         System.out.println("   (Se creo un objeto Inventario)");
+    }
+
+    // 3. Punto de acceso global: la primera vez crea el objeto, despues siempre devuelve el mismo
+    public static synchronized Inventario getInstance() {
+        if (instancia == null) {
+            instancia = new Inventario();
+        }
+        return instancia;
     }
 
     public void agregarStock(Producto p, int cantidad) {

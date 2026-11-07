@@ -1,15 +1,17 @@
 package gestion;
 
-import externo.GamerPayService;
 import modelo.Producto;
 import pagos.MetodoPago;
 
 /**
  * Atiende las ventas de la tienda.
+ * Gracias al Adapter, un solo metodo vender() sirve para TODOS los metodos de pago,
+ * incluido GamerPay.
  */
 
 public class Caja {
-    private Inventario inventario = new Inventario();
+    // Usa la unica instancia del inventario (Singleton)
+    private Inventario inventario = Inventario.getInstance();
 
     public void vender(Producto p, MetodoPago metodo) {
         System.out.println("Venta de " + p.getNombre() + " con " + metodo.getNombre());
@@ -20,25 +22,6 @@ public class Caja {
         if (metodo.pagar(p.getPrecio())) {
             inventario.descontar(p);
             System.out.println("   Venta registrada.");
-        }
-    }
-
-    // GamerPay no implementa MetodoPago, asi que necesita su propio metodo de venta
-    public void venderConGamerPay(Producto p, GamerPayService gamerPay, String gamerTag) {
-        System.out.println("Venta de " + p.getNombre() + " con GamerPay");
-        if (!inventario.hayStock(p)) {
-            System.out.println("   No hay stock disponible.");
-            return;
-        }
-
-        long centavos = Math.round(p.getPrecio() * 100);
-        int estado = gamerPay.procesarTransaccion(gamerTag, centavos);
-
-        if (estado == 200) {
-            inventario.descontar(p);
-            System.out.println("   Venta registrada.");
-        } else {
-            System.out.println("   GamerPay rechazo el pago (codigo " + estado + ").");
         }
     }
 }

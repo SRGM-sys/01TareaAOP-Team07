@@ -7,7 +7,8 @@ import modelo.Producto;
  */
 
 public class Bodega {
-    private Inventario inventario = new Inventario();
+    // Usa la unica instancia del inventario (Singleton)
+    private Inventario inventario = Inventario.getInstance();
 
     public void recibirMercaderia(Producto p, int cantidad) {
         inventario.agregarStock(p, cantidad);
