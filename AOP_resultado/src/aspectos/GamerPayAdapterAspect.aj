@@ -24,13 +24,10 @@ public aspect GamerPayAdapterAspect {
 
     // 4. Inyección del método pagar(double) exigido por la interfaz MetodoPago (Target)
     public boolean GamerPayService.pagar(double monto) {
-        // Traducción 1: dólares (double) -> centavos (long)
         long centavos = Math.round(monto * 100);
 
-        // Llamada directa al método nativo de la propia clase adaptada
         int estado = this.procesarTransaccion(this.gamerTag, centavos);
 
-        // Traducción 2: código de estado numérico (int) -> confirmación booleana
         if (estado == 200) {
             return true;
         }

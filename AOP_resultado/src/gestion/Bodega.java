@@ -7,15 +7,15 @@ import modelo.Producto;
  */
 
 public class Bodega {
-    // Usa la unica instancia del inventario (Singleton)
-    private Inventario inventario = Inventario.getInstance();
+    // Instanciación estándar: SingletonInventarioAspect devolverá la instancia única
+    private Inventario inventario = new Inventario();
 
     public void recibirMercaderia(Producto p, int cantidad) {
         inventario.agregarStock(p, cantidad);
-        System.out.println("   Bodega recibio " + cantidad + " x " + p.getNombre());
+        System.out.println("  Bodega recibio " + cantidad + " x " + p.getNombre());
     }
 
     public void reporteStock(Producto p) {
-        System.out.println("   Stock de " + p.getNombre() + ": " + inventario.consultarStock(p));
+        System.out.println("  Stock de " + p.getNombre() + ": " + inventario.consultarStock(p));
     }
 }
